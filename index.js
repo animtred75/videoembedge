@@ -1,12 +1,16 @@
 var vid = document.getElementById('vid');
-var fg = new URL(window.location).search.substr(1).split('&').forEach(function (p) {
+var ggfd = false;
+var fg = location.search.substr(1).split('&').forEach(function (p) {
     var parts = p.split('=');
     if (parts[0] == 'video_url') {
+        ggfd = true;
         vid.src = decodeURIComponent(parts[1]);
     } else {
-        fetch('videoorg.json').then(async function (r) {
-            var fh = await r.text();
-            vid.src = JSON.parse(fh).video_origin;
-        })
+        if (!ggfd) {
+            fetch('videoorg.json').then(async function (r) {
+                var fh = await r.text();
+                vid.src = JSON.parse(fh).video_origin;
+            })
+        }
     }
 });
